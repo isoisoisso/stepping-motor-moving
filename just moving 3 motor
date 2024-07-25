@@ -1,0 +1,42 @@
+// ステップのパターンを定義
+const int stepSequence[4][4] = {
+  {1, 0, 0, 1},
+  {1, 0, 1, 0},
+  {0, 1, 1, 0},
+  {0, 1, 0, 1}
+};
+
+// ピンを定義
+const int motorPins[4] = {8, 9, 10, 11};
+
+void setup() {
+  // すべてのモーターピンを出力モードに設定
+  for (int i = 0; i < 4; i++) {
+    pinMode(motorPins[i], OUTPUT);
+  }
+}
+
+void loop() {
+  // 時計回りに1回転（2048ステップ）
+  for (int i = 0; i < 2048; i++) {
+    stepMotor(i % 4);
+    delay(1); // ステップ間の遅延時間を調整
+  }
+
+  delay(1000); // 1秒待つ
+
+  // 反時計回りに1回転（2048ステップ）
+  for (int i = 0; i < 2048; i++) {
+    stepMotor(3 - (i % 4));
+    delay(1); // ステップ間の遅延時間を調整
+  }
+
+  delay(1000); // 1秒待つ
+}
+
+// 指定されたステップに従ってモーターを動かす関数
+void stepMotor(int step) {
+  for (int pin = 0; pin < 4; pin++) {
+    digitalWrite(motorPins[pin], stepSequence[step][pin]);
+  }
+}
